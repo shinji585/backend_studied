@@ -1,0 +1,66 @@
+# Understanding REST APIs and Web Services
+
+http is a protocol that define how the things are transfer in web (now we have https) it mean 
+HyperTest Transfer Protocol 
+
+but the real meaning is: 
+    A communication protocol used by clients and servers to exchange data 
+
+
+this words mean the next: 
+
+1. Protocol: A protocol is a set of rules for communication for instance: "how to start a conversation", "how to format messages", "how to respond"
+
+2. Transfer: A transfer in this context is sending data from one place to another 
+
+3. HyperTest: this concept originally meant -> linked documents (web pages) but nowdays it means -> any kind of data (json, html, files, etc.)
+
+So, What is the core idea here? 
+
+http is the languages that enables this: 
+
+Client (browser / app)
+        ↓
+HTTP request 
+        ↓
+Server (FastAPI)
+        ↓
+HTTP Response 
+        ↓
+Client
+
+so is a loop 
+
+an example of this could be the next: 
+
+You enter into whatsapp and this action is a trigger so in the server it activate an action that is 
+send your last status and if is not status say you to loguing 
+
+the action here follow the explained before where the client (your browser) make the request then that is 
+send into the server and the server send the http response to you 
+
+
+# How a request looks like 
+
+GET /post HTTP/1.1
+Host: example.com
+
+it means: I want to GET the resource /posts 
+
+A request has some components 
+
+METHOD -> action (GET, POST)
+PATH -> resource (/posts)
+HEADERS -> metadata
+BODY -> data (optional)
+
+something we have are the HTTP methods that tells to the API the next: 
+    which action to perform on the resource 
+
+# The most common HTTP methods
+
+1. GET: Retrieve an existing resource. (read)
+2. POST: Create a new resource. (add)
+3. PUT: Update an existing resource. (replace everything)
+4. PATCH: Partially update an existing resource. (modify)
+5. DELETE: Delete a resource  (remove)
