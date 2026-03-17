@@ -24,7 +24,7 @@ posts: list[dict] = [
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 @app.get("/post", response_class=HTMLResponse, include_in_schema=False)
-def home[T]() -> T: 
+def home() -> str: 
     return f"<h1>{posts[0]['title']}</h1>"
 
 @app.get("/api/post")
