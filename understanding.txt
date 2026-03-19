@@ -64,3 +64,70 @@ something we have are the HTTP methods that tells to the API the next:
 3. PUT: Update an existing resource. (replace everything)
 4. PATCH: Partially update an existing resource. (modify)
 5. DELETE: Delete a resource  (remove)
+
+# Status Codes 
+
+Oncce a REST API receives and processes an HTTP request, it will return an HTTP reponse. Included in this reponse is an HTTP  status code. 
+This conce provides information about the result of the request. An application sending requests to the API can check the status code and perfom actions based on the result. 
+These actions could include handling errors or displaying a success message to a user. 
+
+
+# Some these status codes are the next: 
+
+1. 200: ok -> the requested action was susccesful 
+2. 201: Created -> A new resource was created. 
+3. 202: Accepted -> The request was received, but not modification has been made yet 
+4. 204: No Content -> The request was susccesful,  but the reponse has no content
+5. 400: Bad Request -> The request was malformed. 
+6. 401: Unauthorized -> The clinet is not authorized to perfom the requested action 
+7. 404: Not Found -> The requested resource was not found. 
+8. 415: Unsupported Media Type -> The request data format is not supported by the server 
+9. 422: Unprocessable Entity -> The request data was properly formatted but contained invalid or missing data. 
+10. Internal Server Error -> The server threw an error when processing the request 
+
+these status codes say to us what is the status of the server
+
+
+# What is an Endpoint?
+
+An endpoint is a specific point where a clinet can access a resource in your API 
+
+more precisely: 
+        Endpoint = (HTTP Method + URL Path)
+
+# Examples: 
+        GET /posts
+        POST / posts 
+        GET /posts/1
+
+Each of these is a different endpoint 
+
+
+# Clean structure 
+
+Client sends request:
+    METHOD + PATH + PARAMETERS
+
+        ↓
+
+Endpoint matches:
+    (METHOD, PATH)
+
+        ↓
+
+Parameters extracted:
+    path / query / body
+
+        ↓
+
+Handler executes:
+    logic runs
+
+        ↓
+
+Response generated:
+    status + data
+
+        ↓
+
+Client receives result
