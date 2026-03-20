@@ -23,9 +23,10 @@ class Country(BaseModel):
 countries: list[Country] = []
 
 def _get_next_id() -> int:
-    if not countries: 
+    valid_ids = [c.country_id for c in countries if c.country_id is not None]
+    if not valid_ids: 
         return 1  
-    return max(country.country_id for country in countries if country.country_id is not None) + 1 
+    return max(valid_ids) + 1 
 
 def _create_country(data: dict) -> Country: 
     new_country = Country(
@@ -46,10 +47,7 @@ async def get_countries():
     return countries
 
 @app.post("/countries",status_code=201)
-async def add_country(country: Country): 
-    new_id = _get_next_id()
-    
-    country.country_id = new_id
-        
-    print(f"Country saved: {country}")
-    return country
+async def add_country(country: dict): 
+    clean_data = {k: v for k,v in country.items() if k != "id"}
+    new_country = _create_country(clean_data)
+    return new_country
