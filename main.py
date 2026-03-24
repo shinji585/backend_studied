@@ -1,33 +1,22 @@
+# mypy: ignore-errors
+
+from fastapi import APIRouter
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+
+countries_router = APIRouter()
+
+coutries: list = []
+
+@countries_router.get("/countries")
+async def get_countries() -> list: 
+    return coutries
+
+@countries_router.post("/countries")
+async def post_countries(dato: dict) -> dict: 
+    coutries.append(dato)
+    return {"message": f"country added: {dato}"} 
+
 
 app = FastAPI()
 
-posts: list[dict] = [
-    {
-        "id": 1,
-        "author": "Corey Schafer",
-        "title": "FastAPI is Awesome",
-        "content": "This framework is really easy to use and super fast.",
-        "date_posted": "April 20, 2025",
-    },
-    {
-        "id": 2,
-        "author": "Jane Doe",
-        "title": "Python is Great for Web Development",
-        "content": "Python is a great language for web development, and FastAPI makes it even better.",
-        "date_posted": "April 21, 2025",
-    },
-]
-
-
-
-@app.get("/", response_class=HTMLResponse, include_in_schema=False)
-@app.get("/post", response_class=HTMLResponse, include_in_schema=False)
-def home() -> str: 
-    return f"<h1>{posts[0]['title']}</h1>"
-
-@app.get("/api/post")
-def get_post() -> list[dict]: 
-    return posts
-
+app.include_router(countries_router)

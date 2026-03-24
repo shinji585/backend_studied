@@ -1,4 +1,6 @@
 # in this section you will find a server made using fasstapi and here is where the things studied before start to have meaning 
+# mypy: ignore-errors
+
 from fastapi import FastAPI, Body
 from pydantic import BaseModel, Field
 from fastapi.middleware.cors import CORSMiddleware
