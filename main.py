@@ -1,22 +1,15 @@
 # mypy: ignore-errors
 
-from fastapi import APIRouter
 from fastapi import FastAPI
 
-countries_router = APIRouter()
-
-coutries: list = []
-
-@countries_router.get("/countries")
-async def get_countries() -> list: 
-    return coutries
-
-@countries_router.post("/countries")
-async def post_countries(dato: dict) -> dict: 
-    coutries.append(dato)
-    return {"message": f"country added: {dato}"} 
-
+from todo import todo_router
 
 app = FastAPI()
 
-app.include_router(countries_router)
+@app.get("/")
+async def welcome() -> dict: 
+    return {
+        "message": "Hello world"
+    }
+    
+app.include_router(router=todo_router)
