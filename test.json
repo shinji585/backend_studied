@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "title": "Configuración de Entorno",
+    "item": {
+      "item": "Instalar Docker Desktop y Postman via Winget",
+      "status": "completed"
+    }
+  },
+  {
+    "id": 2,
+    "title": "Estudio de Backend",
+    "item": {
+      "item": "Terminar capítulo de Pydantic en el libro de FastAPI",
+      "status": "in progress"
+    }
+  },
+  {
+    "id": 3,
+    "title": "Rutina de Gimnasio",
+    "item": {
+      "item": "Peso muerto 110kg y rehabilitación de hombro",
+      "status": "pending"
+    }
+  },
+  {
+    "id": 4,
+    "title": "Matemáticas para ML",
+    "item": {
+      "item": "Repasar multiplicación de matrices en NumPy",
+      "status": "in progress"
+    }
+  },
+  {
+    "id": 5,
+    "title": "Estudio de Backend",
+    "item": {
+      "item": "Aprender sobre autenticación con JWT en FastAPI",
+      "status": "pending"
+    }
+  },
+  {
+    "id": 6,
+    "title": "Rutina de Gimnasio",
+    "item": {
+      "item": "Entrenamiento de pecho y tríceps",
+      "status": "completed"
+    }
+  },
+  {
+    "id": 7,
+    "title": "Estudio de Backend",
+    "item": {
+      "item": "Practicar endpoints con query parameters",
+      "status": "in progress"
+    }
+  },
+  {
+    "id": 8,
+    "title": "Integración de Sistemas",
+    "item": {
+      "item": "Conectar FastAPI con una base de datos PostgreSQL",
+      "status": "in progress"
+    }
+  },
+  {
+    "id": 9,
+    "title": "Rutina de Gimnasio",
+    "item": {
+      "item": "Cardio y movilidad",
+      "status": "pending"
+    }
+  },
+  {
+    "id": 10,
+    "title": "Prueba de Carga",
+    "item": {
+      "item": "Enviar 1000 peticiones concurrentes con este JSON",
+      "status": "pending"
+    }
+  }
+]

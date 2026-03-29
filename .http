@@ -1,16 +1,63 @@
-GET http://localhost:8000/
+# global variable
+@baseUrl = http://localhost:8000
+
+GET {{baseUrl}}/
 
 ###
 
-POST http://localhost:8000/todo
+POST {{baseUrl}}/todo
 Content-Type: application/json
 
 {
-    "title": "Home work",
-    "description": "make the linear algebra exercises"
+    "title": "home work",
+    "item": "make the linear algebra exercises"
 }
 
 
 ###
 
-GET http://localhost:8000/todo
+GET {{baseUrl}}/todo
+
+
+### new post with the new form of the todo class 
+POST {{baseUrl}}/todo HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "clean",
+    "item": {
+        "item": "clean the bedroom",
+        "status": "in progress"
+    }
+}
+
+###
+
+GET {{baseUrl}}/todo HTTP/1.1
+
+### new post with the new form including the id
+
+POST {{baseUrl}}/todo/list HTTP/1.1
+Content-Type: application/json
+
+< ./test.json
+
+### 
+
+GET {{baseUrl}}/todo HTTP/1.1
+
+
+### get using parameters 
+GET {{baseUrl}}/todo/3 HTTP/1.1
+
+### example of the same but using 0 
+GET {{baseUrl}}/todo/0 HTTP/1.1
+
+
+### get using query parameters 
+GET {{baseUrl}}/search?query=Estudio%20de%20Backend HTTP/1.1
+
+
+### get using query parameters 2 
+
+GET {{baseUrl}}/search?query=Rutina%20de%20Gimnasio HTTP/1.1
