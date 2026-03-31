@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Path, Query
-from model import Todo
+from model import Todo, TodoUpdate
 
 todo_router = APIRouter()
 
@@ -41,8 +41,35 @@ async def search_todo(query: str = Query(..., title="Search todo")) -> dict:
     match_: list = []
     for todo in todo_list:
         if todo.title == query:
-            match_.append(todo.item)
+            match_.append(todo)
     if  match_:
         return {"results": match_}
     else:
         return {"message": "Todo is not on the db"}
+    
+    
+# using update method -> path 
+@todo_router.patch("/todo/{id}")
+async def update_data(todoUpdate: TodoUpdate, id: int = Path(...,title="the ID of the todo to be updated")) -> dict: 
+    for todo in todo_list: 
+        if todo.id == id:
+            if todoUpdate.title is not None: 
+                todo.title = todoUpdate.title
+            
+            if todoUpdate.item is not None: 
+                todo.item = todoUpdate.item
+                
+            return {"message": "Todo partially updated"}
+    
+    return {"message": "Todo not found"} 
+            
+            
+@todo_router.put("/todo/{id}")
+async def update_data_everything(todoUpdate: TodoUpdate, id: int = Path(...,title="he ID of the todo to be updated")) -> dict: 
+    for todo in todo_list: 
+        if todo.id == id: 
+            todo.title = todoUpdate.title if todoUpdate.title is not None else todo.title
+            todo.item = todoUpdate.item if todoUpdate.item is not None else todo.item
+            return {"message": "Todo all Updated"}
+        
+    return {"message": "Todo not found"}

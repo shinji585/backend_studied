@@ -61,3 +61,20 @@ GET {{baseUrl}}/search?query=Estudio%20de%20Backend HTTP/1.1
 ### get using query parameters 2 
 
 GET {{baseUrl}}/search?query=Rutina%20de%20Gimnasio HTTP/1.1
+
+
+### Using path to make update 
+
+PATCH {{baseUrl}}/todo/1
+Content-Type: application/json
+
+{
+    "title": "Gym pr",
+    "item": {
+        "item": "sacar los 150 kg en sentadilla libre el proximo lunes", 
+        "status": "Uncompleted"
+    }
+}
+
+
+GET {{baseUrl}}/search?query=Gym%20pr HTTP/1.1
