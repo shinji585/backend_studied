@@ -76,5 +76,6 @@ Content-Type: application/json
     }
 }
 
+###
 
 GET {{baseUrl}}/search?query=Gym%20pr HTTP/1.1
