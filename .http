@@ -65,7 +65,7 @@ GET {{baseUrl}}/search?query=Rutina%20de%20Gimnasio HTTP/1.1
 
 ### Using path to make update 
 
-PATCH {{baseUrl}}/todo/1
+PATCH {{baseUrl}}/todo/100
 Content-Type: application/json
 
 {
@@ -79,3 +79,7 @@ Content-Type: application/json
 ###
 
 GET {{baseUrl}}/search?query=Gym%20pr HTTP/1.1
+
+### another get 
+
+GET {{baseUrl}}/todo HTTP/1.1
