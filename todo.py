@@ -1,94 +1,131 @@
-from fastapi import APIRouter, Path, Query, HTTPException, status
-from model import Todo, TodoUpdate, TodoItems
+from fastapi import APIRouter, Depends, Path, Query, HTTPException, Request, status
+from model import Todo, TodoUpdate
+from fastapi.templating import Jinja2Templates
+
+# response_model is not used with jinja 
 
 todo_router = APIRouter()
 
 todo_list: list[Todo] = []
 
 
-@todo_router.post("/todo")
-async def add_todo(todo: Todo) -> dict:
+# this mean all my HTML templates live inside /templates
+templates = Jinja2Templates(directory="templates/")
+
+@todo_router.post("/web/todo")
+async def add_todo(request: Request,todo: Todo = Depends(Todo.as_form)):
+    todo.id = max([t.id for t in todo_list if t.id is not None], default=0) + 1 
     todo_list.append(todo)
-    return {"message": "Todo added successfully"}
-
-
-@todo_router.get("/todo", response_model=TodoItems)
-async def get_todo() -> dict:
     
-    if len(todo_list) == 0: 
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "todos": todo_list
+    })
+
+
+@todo_router.get("/web/todo")
+async def get_todo(request: Request):
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "todos": todo_list
+    })
+
+
+
+@todo_router.post("/web/todo/list")
+async def add_todo_list(request: Request, todos: list[Todo]):
+    
+    try: 
+        for todo in todos:
+            todo_list.append(todo)
+    except Exception: 
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No todos found"
-        )
-    return {"todos": todo_list}
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to add todo"
+        )        
+                
+    return templates.TemplateResponse("index.html",{
+        "request": request,
+        "todos": todo_list
+    })
+    
 
-
-
-@todo_router.post("/todo/list")
-async def add_todo_list(todos: list[Todo]) -> dict:
-    for todo in todos:
-        todo_list.append(todo)
-    return {"message": "Todos added successfully"}
-
-
-@todo_router.get("/todo/{todo_id}")
-async def get_single_todo(
-    todo_id: int = Path(..., title="The ID for the todo to retrieve.", gt=0),
-) -> dict:
+@todo_router.get("/web/todo/{todo_id}")
+async def get_single_todo(request: Request, todo_id: int = Path(..., gt=0)):
 
     for todo in todo_list:
         if todo.id == todo_id:
-            return {"todo": todo}
+            return templates.TemplateResponse("index.html", {
+                "request": request,
+                "todo": [todo]
+            })
 
     raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="Todo with supplied ID doesn't exits"
+        status_code=404,
+        detail="Todo not found"
     )
 
+@todo_router.get("/web/search")
+async def search_todo(request: Request, query: str = Query(...)):
 
-@todo_router.get("/search")
-async def search_todo(query: str = Query(..., title="Search todo")) -> dict:
-    match_: list = []
-    for todo in todo_list:
-        if todo.title == query:
-            match_.append(todo)
-    if  match_:
-        return {"results": match_}
-    
+    match_ = [todo for todo in todo_list if todo.title == query]
+
+    if match_:
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "results": match_
+        })
+
     raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail="Todo is not on the db"
+        status_code=404,
+        detail="Todo not found"
     )
     
     
 # using update method -> path 
-@todo_router.patch("/todo/{id}")
-async def update_data(todoUpdate: TodoUpdate, id: int = Path(...,title="the ID of the todo to be updated")) -> dict: 
-    for todo in todo_list: 
+@todo_router.patch("/web/todo/{id}")
+async def update_data(
+    request: Request,
+    todoUpdate: TodoUpdate,
+    id: int = Path(..., title="The ID of the todo to be updated", gt=0)
+):
+    for todo in todo_list:
         if todo.id == id:
-            if todoUpdate.title is not None: 
+
+            if todoUpdate.title is not None:
                 todo.title = todoUpdate.title
-            
-            if todoUpdate.item is not None: 
+
+            if todoUpdate.item is not None:
                 todo.item = todoUpdate.item
-                
-            return {"message": "Todo partially updated"}
-    
+
+            return templates.TemplateResponse("index.html", {
+                "request": request,
+                "todos": todo_list
+            })
+
     raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
+        status_code=404,
         detail="Todo not found"
     )
             
             
-@todo_router.put("/todo/{id}")
-async def update_data_everything(todoUpdate: TodoUpdate, id: int = Path(...,title="he ID of the todo to be updated")) -> dict: 
-    for todo in todo_list: 
-        if todo.id == id: 
+@todo_router.put("/web/todo/{id}")
+async def update_data_everything(
+    request: Request,
+    todoUpdate: TodoUpdate,
+    id: int = Path(..., title="The ID of the todo to be updated", gt=0)
+):
+    for todo in todo_list:
+        if todo.id == id:
             todo.title = todoUpdate.title if todoUpdate.title is not None else todo.title
             todo.item = todoUpdate.item if todoUpdate.item is not None else todo.item
-            return {"message": "Todo all Updated"}
-        
+
+            return templates.TemplateResponse("index.html", {
+                "request": request,
+                "todos": todo_list
+            })
+
     raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND,
+        status_code=404,
         detail="Todo not found"
     )

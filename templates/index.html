@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo App</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <!-- TITLE -->
+    <div class="text-center mb-4">
+        <h1>Todo Application</h1>
+    </div>
+
+    <!-- FORM -->
+    <div class="card p-4 mb-4 shadow-sm">
+
+        <!-- IMPORTANT: action MUST match your endpoint -->
+        <form method="post" action="/web/todo">
+
+            <div class="mb-3">
+                <input type="text" name="title" class="form-control" placeholder="Title" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="text" name="item" class="form-control" placeholder="Task" required>
+            </div>
+
+            <div class="mb-3">
+                <input type="text" name="status" class="form-control" placeholder="Status" required>
+            </div>
+
+            <button class="btn btn-primary w-100">Add Todo</button>
+        </form>
+    </div>
+
+    <!-- TODOS LIST -->
+    <div class="card shadow-sm p-3">
+
+        <h4>Todos</h4>
+
+        {% if todos %}
+            <ul class="list-group">
+                {% for todo in todos %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <strong>{{ todo.title }}</strong><br>
+                            {{ todo.item.item }}
+                        </div>
+
+                        <span class="badge bg-secondary">
+                            {{ todo.item.status }}
+                        </span>
+
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No todos yet</p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
